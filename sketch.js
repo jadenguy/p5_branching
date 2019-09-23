@@ -4,10 +4,15 @@ let o;
 
 function setup() {
   b = new binaryNode(5);
-  b.left = new binaryNode(1);
-  b.rightChild = new binaryNode(8);
+  b.left = 1;
+  b.right = 8;
+  b.left.left = 0;
+  b.left.right = 3;
+  b.left.right.left = 2;
+  b.left.right.right = 4;
+
   createCanvas(400, 400);
-  o = { angle: createVector(width / 2, 50) };
+  o = createVector(width / 2, 50);
 }
 
 function draw() {

@@ -1,20 +1,38 @@
 class binaryNode {
-    constructor(value = null, left = null, right = null, angle = createVector(0, 10)) {
+    constructor(value = null, angle = createVector(0, 10), domain = PI, left = null, right = null) {
         this.value = value;
+        this.angle = angle;
+        this.domain = domain;
         this.leftChild = left;
         this.rightChild = right;
-        this.angle = angle;
     }
-    set left(value = null) { ; }
-    get left() { return this.leftChild }
+    set left(value = null) {
+        const newAngle = p5.Vector.mult(this.angle, 1.5);
+        newAngle.rotate(+ (this.domain / 4));
+        this.leftChild = new binaryNode(value, newAngle, this.domain / 2);
+    }
+    get left() {
+        return this.leftChild;
+    }
+    set right(value = null) {
+        const newAngle = p5.Vector.mult(this.angle, 1.5);
+        newAngle.rotate(- (this.domain / 4));
+        this.rightChild = new binaryNode(value, newAngle, this.domain / 2);
+    }
+    get right() {
+        return this.rightChild;
+    }
     Draw(parent) {
         push();
-        const x0 = parent.angle.x;
-        const y0 = parent.angle.y;
-        const newAngle = p5.Vector.add(parent.angle, this.angle);
-        const x1 = newAngle.x;
-        const y1 = newAngle.y;
+        const x0 = parent.x;
+        const y0 = parent.y;
+        const endHere = p5.Vector.add(parent, this.angle);
+        const x1 = endHere.x;
+        const y1 = endHere.y;
         line(x0, y0, x1, y1);
+        text(this.value, x1 + 2, y1 + 2);
+        if (this.leftChild) { this.left.Draw(endHere); }
+        if (this.rightChild) { this.right.Draw(endHere); }
         pop();
     }
 }
