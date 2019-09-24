@@ -3,7 +3,7 @@ let o;
 
 
 function setup() {
-  b = new binaryNode(5);
+  b = new binaryNode(5, createVector(15), HALF_PI);
   b.left = 1;
   b.right = 8;
   b.left.left = 0;
@@ -11,8 +11,10 @@ function setup() {
   b.left.right.left = 2;
   b.left.right.right = 4;
 
-  createCanvas(400, 400);
-  o = createVector(width / 2, 50);
+  createCanvas(800, 600);
+  o = createVector(5, height / 2);
+  stroke(0);
+  fill(220);
 }
 
 function draw() {
