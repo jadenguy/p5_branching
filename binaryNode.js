@@ -1,5 +1,6 @@
+const growRate = 1.1;
 class binaryNode {
-    constructor(key = null, angle = createVector(0, 20), domain = PI, left = null, right = null) {
+    constructor(key = null, angle = createVector(1), domain = PI, left = null, right = null) {
         this.key = key;
         this.angle = angle;
         this.domain = domain;
@@ -7,16 +8,15 @@ class binaryNode {
         this.rightChild = right;
     }
     set left(key = null) {
-        const newAngle = p5.Vector.mult(this.angle, 2);
-        newAngle.rotate(+ (this.domain / 4));
+        const newAngle = p5.Vector.mult(this.angle, HALF_PI / this.domain);
+        newAngle.rotate(+ this.domain / 2);
         this.leftChild = new binaryNode(key, newAngle, this.domain / 2);
     }
     get left() {
         return this.leftChild;
     }
     set right(key = null) {
-        const newAngle = p5.Vector.mult(this.angle, 2);
-        newAngle.rotate(- (this.domain / 4));
+        const newAngle = p5.Vector.mult(this.angle, 1);
         this.rightChild = new binaryNode(key, newAngle, this.domain / 2);
     }
     get right() {
@@ -43,24 +43,26 @@ class binaryNode {
             console.log("DUPLICATE KEY");
         }
     }
-    Draw(parent) {
+    Draw(parent, mag) {
         push();
         const x0 = parent.x;
         const y0 = parent.y;
-        const endHere = p5.Vector.add(parent, this.angle);
+        const lineVector = p5.Vector.mult(this.angle, mag);
+        const endHere = p5.Vector.add(parent, lineVector);
         const x1 = endHere.x;
         const y1 = endHere.y;
-        if (this.leftChild) { this.left.Draw(endHere); }
-        if (this.rightChild) { this.right.Draw(endHere); }
+        if (this.leftChild) { this.left.Draw(endHere, mag); }
+        if (this.rightChild) { this.right.Draw(endHere, mag); }
         stroke(0);
         line(x0, y0, x1, y1);
         const tl = (this.key).toString().length;
         stroke(0)
         fill(220);
-        rect(x1, y1, tl * 11, 15);
+        rect(x1 - 2, y1 + 1, tl * 10, 15);
         fill(0);
         stroke(0, 0, 0, 0);
-        text(this.key, x1 + 2, y1 + 13);
+        textFont('courier');
+        text(this.key, x1, y1 + 13);
         pop();
     }
 }
