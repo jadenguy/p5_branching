@@ -1,5 +1,5 @@
 class binaryNode {
-    constructor(value = null, angle = createVector(0, 10), domain = PI, left = null, right = null) {
+    constructor(value = null, angle = createVector(0, 20), domain = PI, left = null, right = null) {
         this.value = value;
         this.angle = angle;
         this.domain = domain;
@@ -22,6 +22,27 @@ class binaryNode {
     get right() {
         return this.rightChild;
     }
+    Add(value) {
+        if (value < this.value) {
+            if (this.left === null) {
+                this.left = value;
+            }
+            else {
+                this.left.Add(value);
+            }
+        }
+        else if (value > this.value) {
+            if (this.right === null) {
+                this.right = value;
+            }
+            else {
+                this.right.Add(value);
+            }
+        }
+        else {
+            console.log("DUPLICATE VALUE");
+        }
+    }
     Draw(parent) {
         push();
         const x0 = parent.x;
@@ -34,7 +55,7 @@ class binaryNode {
         stroke(0);
         line(x0, y0, x1, y1);
         const tl = (this.value).toString().length;
-        stroke(0,0)
+        stroke(0)
         fill(220);
         rect(x1, y1, tl * 11, 15);
         fill(0);
@@ -42,4 +63,13 @@ class binaryNode {
         text(this.value, x1 + 2, y1 + 13);
         pop();
     }
+}
+
+function createBinaryNode(list, angle = createVector(0, 20), domain = PI) {
+    const ret = new binaryNode(list[0], angle, domain);
+    for (let index = 1; index < list.length; index++) {
+        const element = list[index];
+        ret.Add(element);
+    }
+    return ret;
 }

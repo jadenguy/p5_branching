@@ -3,15 +3,9 @@ let o;
 
 
 function setup() {
-  b = new binaryNode(5, createVector(15), HALF_PI);
-  b.left = 1;
-  b.right = 8;
-  b.left.left = 0;
-  b.left.right = 3;
-  b.left.right.left = 2;
-  b.left.right.right = 4;
-
-  createCanvas(800, 600);
+  const list = [5, 1, 8, 10, 9, 7, 6, 0, 3, 2, 4]
+  b = createBinaryNode(list, createVector(15), HALF_PI);
+  createCanvas(1600, 900);
   o = createVector(5, height / 2);
   stroke(0);
   fill(220);
