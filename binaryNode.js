@@ -1,46 +1,46 @@
 class binaryNode {
-    constructor(value = null, angle = createVector(0, 20), domain = PI, left = null, right = null) {
-        this.value = value;
+    constructor(key = null, angle = createVector(0, 20), domain = PI, left = null, right = null) {
+        this.key = key;
         this.angle = angle;
         this.domain = domain;
         this.leftChild = left;
         this.rightChild = right;
     }
-    set left(value = null) {
+    set left(key = null) {
         const newAngle = p5.Vector.mult(this.angle, 2);
         newAngle.rotate(+ (this.domain / 4));
-        this.leftChild = new binaryNode(value, newAngle, this.domain / 2);
+        this.leftChild = new binaryNode(key, newAngle, this.domain / 2);
     }
     get left() {
         return this.leftChild;
     }
-    set right(value = null) {
+    set right(key = null) {
         const newAngle = p5.Vector.mult(this.angle, 2);
         newAngle.rotate(- (this.domain / 4));
-        this.rightChild = new binaryNode(value, newAngle, this.domain / 2);
+        this.rightChild = new binaryNode(key, newAngle, this.domain / 2);
     }
     get right() {
         return this.rightChild;
     }
-    Add(value) {
-        if (value < this.value) {
+    Add(key) {
+        if (key < this.key) {
             if (this.left === null) {
-                this.left = value;
+                this.left = key;
             }
             else {
-                this.left.Add(value);
+                this.left.Add(key);
             }
         }
-        else if (value > this.value) {
+        else if (key > this.key) {
             if (this.right === null) {
-                this.right = value;
+                this.right = key;
             }
             else {
-                this.right.Add(value);
+                this.right.Add(key);
             }
         }
         else {
-            console.log("DUPLICATE VALUE");
+            console.log("DUPLICATE KEY");
         }
     }
     Draw(parent) {
@@ -54,13 +54,13 @@ class binaryNode {
         if (this.rightChild) { this.right.Draw(endHere); }
         stroke(0);
         line(x0, y0, x1, y1);
-        const tl = (this.value).toString().length;
+        const tl = (this.key).toString().length;
         stroke(0)
         fill(220);
         rect(x1, y1, tl * 11, 15);
         fill(0);
         stroke(0, 0, 0, 0);
-        text(this.value, x1 + 2, y1 + 13);
+        text(this.key, x1 + 2, y1 + 13);
         pop();
     }
 }
