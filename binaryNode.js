@@ -1,22 +1,26 @@
 const growRate = 1.1;
 class binaryNode {
-    constructor(key = null, angle = createVector(1), domain = PI, left = null, right = null) {
+    constructor(key = null, angle = createVector(1), domain = PI) {
         this.key = key;
         this.angle = angle;
         this.domain = domain;
-        this.leftChild = left;
-        this.rightChild = right;
+        this.leftChild = null;
+        this.rightChild = null;
     }
     set left(key = null) {
-        const newAngle = p5.Vector.mult(this.angle, HALF_PI / this.domain);
-        newAngle.rotate(+ this.domain / 2);
+        const lMult = 1; HALF_PI / this.domain;
+        const newAngle = p5.Vector.mult(this.angle, lMult);
+        newAngle.rotate(this.domain / 4);
         this.leftChild = new binaryNode(key, newAngle, this.domain / 2);
     }
     get left() {
         return this.leftChild;
     }
     set right(key = null) {
-        const newAngle = p5.Vector.mult(this.angle, 1);
+        const rMult = 1; HALF_PI / this.domain;
+        const newAngle = p5.Vector.mult(this.angle, rMult);
+
+        newAngle.rotate(-this.domain / 4);
         this.rightChild = new binaryNode(key, newAngle, this.domain / 2);
     }
     get right() {
@@ -58,7 +62,7 @@ class binaryNode {
         const tl = (this.key).toString().length;
         stroke(0)
         fill(220);
-        rect(x1 - 2, y1 + 1, tl * 10, 15);
+        rect(x1 - 1, y1 + 1, tl * 9, 15);
         fill(0);
         stroke(0, 0, 0, 0);
         textFont('courier');
@@ -73,5 +77,6 @@ function createBinaryNode(list, angle = createVector(0, 20), domain = PI) {
         const element = list[index];
         ret.Add(element);
     }
+    ret.angle.setMag(0);
     return ret;
 }
