@@ -1,4 +1,4 @@
-const growRate = 1.1;
+const growRate = 1;
 class binaryNode {
     constructor(key = null, angle = createVector(1), domain = PI) {
         this.key = key;
@@ -8,7 +8,7 @@ class binaryNode {
         this.rightChild = null;
     }
     set left(key = null) {
-        const lMult = 1; HALF_PI / this.domain;
+        const lMult = growRate; HALF_PI / this.domain;
         const newAngle = p5.Vector.mult(this.angle, lMult);
         newAngle.rotate(this.domain / 4);
         this.leftChild = new binaryNode(key, newAngle, this.domain / 2);
@@ -17,9 +17,8 @@ class binaryNode {
         return this.leftChild;
     }
     set right(key = null) {
-        const rMult = 1; HALF_PI / this.domain;
+        const rMult = growRate; HALF_PI / this.domain;
         const newAngle = p5.Vector.mult(this.angle, rMult);
-
         newAngle.rotate(-this.domain / 4);
         this.rightChild = new binaryNode(key, newAngle, this.domain / 2);
     }
@@ -47,7 +46,7 @@ class binaryNode {
             console.log("DUPLICATE KEY");
         }
     }
-    Draw(parent, mag) {
+    Draw(parent, mag, dColor = 0) {
         push();
         const x0 = parent.x;
         const y0 = parent.y;
@@ -55,9 +54,9 @@ class binaryNode {
         const endHere = p5.Vector.add(parent, lineVector);
         const x1 = endHere.x;
         const y1 = endHere.y;
-        if (this.leftChild) { this.left.Draw(endHere, mag); }
-        if (this.rightChild) { this.right.Draw(endHere, mag); }
-        stroke(0);
+        if (this.leftChild) { this.left.Draw(endHere, mag, color(255, 0, 0)); }
+        if (this.rightChild) { this.right.Draw(endHere, mag, color(0, 0, 255)); }
+        stroke(dColor);
         line(x0, y0, x1, y1);
         const tl = (this.key).toString().length;
         stroke(0)
