@@ -9,13 +9,15 @@ function setup() {
   const list = makeList(10);
   const a = createVector(10);
   b = createBinaryNode(list, a, TWO_PI);
-  createCanvas(1600, 900);
+  createCanvas(windowWidth, windowHeight - 4);
   stroke(0);
   fill(220);
   xOff = 0;
   yOff = 0;
 }
-
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight - 4);
+}
 function draw() {
   background(220);
   const o = createVector(xOff, yOff);
@@ -23,7 +25,7 @@ function draw() {
   if (mDelta != 0) {
     m += mDelta;
   }
-  const zoom = Math.pow(2, m);
+  const zoom = Math.pow(2, m) * width * height / 600 / 800;
   if (mouseIsPressed) {
     xOff += (pmouseX - mouseX) / zoom;
     yOff += (pmouseY - mouseY) / zoom;
@@ -38,7 +40,8 @@ function clamp(num, min, max) {
   return num <= min ? min : num >= max ? max : num;
 }
 function mouseWheel(event) {
-  mDelta = -event.delta / 1000;
+  const d = map(event.delta, -500, 500, -1, 1);
+  mDelta -= d;
   return false;
 }
 function makeList(len = 0) {
