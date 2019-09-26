@@ -1,6 +1,6 @@
 const growRate = 2;
 class binaryNode {
-    constructor(key = null, angle = createVector(1), domain = PI) {
+    constructor(key = null, angle = createVector(10), domain = PI) {
         this.key = key;
         this.angle = angle;
         this.domain = domain;
@@ -10,8 +10,8 @@ class binaryNode {
     set left(key = null) {
         const lMult = growRate;
         const newAngle = p5.Vector.mult(this.angle, lMult);
-        newAngle.rotate(this.domain / 4);
-        newAngle.rotate(this.domain / 4);
+        newAngle.rotate(this.domain / 4); // uncomment one of these to split evenly at end of node
+        newAngle.rotate(this.domain / 4); // uncomment two of these to only spilt ti one side
         this._left = new binaryNode(key, newAngle, this.domain / 2);
     }
     get left() {
@@ -20,8 +20,8 @@ class binaryNode {
     set right(key = null) {
         const rMult = growRate;
         const newAngle = p5.Vector.mult(this.angle, rMult);
-        // newAngle.rotate(-this.domain / 4);
-        // newAngle.rotate(-this.domain / 4);
+        // newAngle.rotate(-this.domain / 4); // uncomment one of these to split evenly at end of node
+        // newAngle.rotate(-this.domain / 4); // uncomment two of these to only spilt ti one side
         this._right = new binaryNode(key, newAngle, this.domain / 2);
     }
     get right() {
@@ -48,7 +48,7 @@ class binaryNode {
             console.log("DUPLICATE KEY");
         }
     }
-    Draw(parent, mag, dColor = 0) {
+    Draw(parent, mag = 1, dColor = 0) {
         push();
         const x0 = parent.x;
         const y0 = parent.y;
