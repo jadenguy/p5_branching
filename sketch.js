@@ -47,7 +47,7 @@ function draw() {
     m += mDelta;
     background(220);
   }
-  const zoom = Math.pow(2, m) * width * height / 600 / 600;
+  const zoom = Math.pow(2, m) * (width * width + height * height) / (600 * 600 + 800 * 800);
   if (mouseIsPressed) {
     xOff += (pmouseX - mouseX) / zoom;
     yOff += (pmouseY - mouseY) / zoom;
