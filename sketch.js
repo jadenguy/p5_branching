@@ -1,46 +1,45 @@
 let b;
 let m = -1;
-let r;
-let d;
+let r = 0;
+let dOffset = 0;
 let mDelta = 0;
 let xOff = 0;
 let yOff = 0;
+let rfr = 1;
 
 
 function setup() {
-  b = createBinaryNode(makeList(7));
-  // b = createBinaryNode([1,2,3,4,5,6,7]);
+  b = createBinaryNode(makeList(9));
+  // b = createBinaryNode([1, 2, 3, 4, 5, 6, 7]);
   createCanvas(windowWidth, windowHeight - 4);
   background(220);
   stroke(220);
   r = 0;
   d = PI;
   fill(0);
-  xOff = 0;
-  yOff = 0;
 }
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight - 4);
   background(220);
 }
 function draw() {
-
-  background(220);
-  if (frameCount % 60 == 0) {
-    // background(220);
-    // if (r = 0) { r = 1; } else { r = 0; }
+  // background(220);
+  r = map(Math.sin(frameCount / 60. * TWO_PI / 2), -1, 1, 0, 1);
+  if (r == 0.00) {
+    background(220);
+    dOffset++;
+    dOffset = dOffset % 8;
   }
-  const preR = map(Math.sin(frameCount / 30), -1, 1, 0, 1);
-  r = preR;
-  // r = round(preR * 4) / 4;
-  // d = map(int(frameCount / 120) % 10, 0,9, PI, TWO_PI);
+  d = map(int(dOffset) % 8, 0, 7, QUARTER_PI, TWO_PI);
   stroke(0);
   fill(220);
-  rect(0, 0, 250, 150);
+  rect(0, 0, 250, 200);
   stroke(220);
   fill(0);
   text("bias: " + r, 50, 50);
-  text("domain: " + d, 50, 100);
+  text("domain: " + d / TWO_PI + " pi", 50, 100);
+  rfr = (rfr * 9 + frameRate() / 60) / 10
+  text("framerate: " + round(rfr * 10) * 10 + "%", 50, 150);
   const o = createVector(xOff, yOff);
   const c = createVector(width / 2, height / 2);
   if (mDelta != 0) {
@@ -51,6 +50,7 @@ function draw() {
   if (mouseIsPressed) {
     xOff += (pmouseX - mouseX) / zoom;
     yOff += (pmouseY - mouseY) / zoom;
+    background(220);
   }
   o.mult(zoom);
   c.sub(o);
