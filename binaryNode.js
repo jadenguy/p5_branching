@@ -1,28 +1,17 @@
-const growRate = 2;
 class binaryNode {
-    constructor(key = null, angle = createVector(10), domain = PI) {
+    constructor(key = null) {
         this.key = key;
-        this.angle = angle;
-        this.domain = domain;
         this._left = null;
         this._right = null;
     }
     set left(key = null) {
-        const lMult = growRate;
-        const newAngle = p5.Vector.mult(this.angle, lMult);
-        newAngle.rotate(this.domain / 4); // uncomment one of these to split evenly at end of node
-        newAngle.rotate(this.domain / 4); // uncomment two of these to only spilt ti one side
-        this._left = new binaryNode(key, newAngle, this.domain / 2);
+        this._left = new binaryNode(key);
     }
     get left() {
         return this._left;
     }
     set right(key = null) {
-        const rMult = growRate;
-        const newAngle = p5.Vector.mult(this.angle, rMult);
-        // newAngle.rotate(-this.domain / 4); // uncomment one of these to split evenly at end of node
-        // newAngle.rotate(-this.domain / 4); // uncomment two of these to only spilt ti one side
-        this._right = new binaryNode(key, newAngle, this.domain / 2);
+        this._right = new binaryNode(key);
     }
     get right() {
         return this._right;
@@ -48,39 +37,49 @@ class binaryNode {
             console.log("DUPLICATE KEY");
         }
     }
-    Draw(parent, mag = 1, dColor = 0) {
+    Draw(parent, mag = 1, dColor = 0, angle = createVector(10), domain = TWO_PI, biasR = 0, child = false) {
+
         push();
         const x0 = parent.x;
         const y0 = parent.y;
-        const lineVector = p5.Vector.mult(this.angle, mag);
+        const lineVector = p5.Vector.mult(angle, mag * child);
+        print(lineVector.mag())
         const endHere = p5.Vector.add(parent, lineVector);
         const x1 = endHere.x;
         const y1 = endHere.y;
-        let l, r;
-        if (this.left) { l = this.left.Draw(endHere, mag, color(255, 0, 0)); }
-        if (this.right) { r = this.right.Draw(endHere, mag, color(0, 0, 255)); }
-        // if (this.this._left && this.this._right) { print(l.dist(r)); }
+
+
+        if (this.left) {
+            const lAngle = p5.Vector.mult(angle, mag);
+            lAngle.rotate(domain / 2);
+            this.left.Draw(endHere, mag, color(255, 0, 0), lAngle, domain / 2, biasR, true);
+        }
+        if (this.right) {
+            const rAngle = p5.Vector.mult(angle, mag);
+            this.right.Draw(endHere, mag, color(0, 0, 255), rAngle, domain / 2, biasR, true);
+        }
+
+
         stroke(dColor);
         line(x0, y0, x1, y1);
         const tl = (this.key).toString().length;
         stroke(0)
         fill(220);
-        rect(x1 - 2, y1 + 1, tl * 7 + 5, 15);
+        rect(x1 + 1, y1 + 1, tl * 7 + 5, 15);
         fill(0);
         stroke(0, 0, 0, 0);
         textFont('courier');
-        text(this.key, x1, y1 + 13);
+        text(this.key, x1 + 3, y1 + 13);
         pop();
         return createVector(x1, y1)
     }
 }
 
-function createBinaryNode(list, angle = createVector(0, 20), domain = PI) {
-    const ret = new binaryNode(list[0], angle, domain);
+function createBinaryNode(list) {
+    const ret = new binaryNode(list[0]);
     for (let index = 1; index < list.length; index++) {
         const element = list[index];
         ret.Add(element);
     }
-    ret.angle.setMag(0);
     return ret;
 }

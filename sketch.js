@@ -1,17 +1,16 @@
 let b;
-let m = 1;
+let m = -5;
 let mDelta = 0;
 let xOff = 0;
 let yOff = 0;
 
 
 function setup() {
-  const list = makeList(10);
-  const a = createVector(10);
-  b = createBinaryNode(list, a, TWO_PI);
+  b = createBinaryNode(makeList(10));
   createCanvas(windowWidth, windowHeight - 4);
-  stroke(0);
-  fill(220);
+  stroke(220);
+
+  fill(0);
   xOff = 0;
   yOff = 0;
 }
@@ -19,21 +18,30 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight - 4);
 }
 function draw() {
-  background(220);
-  const o = createVector(xOff, yOff);
-  const c = createVector(width / 2, height / 2);
-  if (mDelta != 0) {
-    m += mDelta;
+
+  if (frameCount % 10 == 0) {
+    r = map(frameCount / 10 % 5, 0, 4, 0, 1);
+    d = map(frameCount / 10 % 20, 0, 19, 0, TWO_PI);
+    a = 0;
+    background(220);
+    text(r, 100, 100);
+    print(r);
+    const o = createVector(xOff, yOff);
+    const c = createVector(width / 2, height / 2);
+    if (mDelta != 0) {
+      m += mDelta;
+    }
+    const zoom = Math.pow(2, m) * width * height / 600 / 800;
+    if (mouseIsPressed) {
+      xOff += (pmouseX - mouseX) / zoom;
+      yOff += (pmouseY - mouseY) / zoom;
+    }
+    o.mult(zoom);
+    c.sub(o);
+    b.Draw(c, zoom);
+    // print(c, zoom, color(0), a, d, r);
+    mDelta = 0;
   }
-  const zoom = Math.pow(2, m) * width * height / 600 / 800;
-  if (mouseIsPressed) {
-    xOff += (pmouseX - mouseX) / zoom;
-    yOff += (pmouseY - mouseY) / zoom;
-  }
-  o.mult(zoom);
-  c.sub(o);
-  b.Draw(c, zoom);
-  mDelta = 0;
 }
 
 function clamp(num, min, max) {
