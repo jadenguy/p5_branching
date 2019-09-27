@@ -1,6 +1,6 @@
-let b;
+let b, d;
 let m = -1;
-let r = 0;
+let r = .5;
 let dOffset = 0;
 let mDelta = 0;
 let xOff = 0;
@@ -14,7 +14,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight - 4);
   background(220);
   stroke(220);
-  r = 0;
   d = PI;
   fill(0);
 }
@@ -23,7 +22,29 @@ function windowResized() {
   background(220);
 }
 function draw() {
-  // background(220);
+  const zoom = Math.pow(2, m) * (width * width + height * height) / (600 * 600 + 800 * 800);
+  if (mouseIsPressed) {
+    xOff += (pmouseX - mouseX) / zoom;
+    yOff += (pmouseY - mouseY) / zoom;
+    background(220);
+  }
+  background(220);
+  // printStatus()
+  const o = createVector(xOff, yOff);
+  const c = createVector(width / 2, height / 2);
+  if (mDelta != 0) {
+    m += mDelta;
+    background(220);
+  }
+  o.mult(zoom);
+  c.sub(o);
+  b.Draw(c, zoom, color(0), d, r, createVector(-10));
+  mDelta = 0;
+
+}
+
+function printStatus() {
+  push();
   r = map(Math.sin(frameCount / 60. * TWO_PI / 2), -1, 1, 0, 1);
   if (r == 0.00) {
     background(220);
@@ -38,27 +59,9 @@ function draw() {
   fill(0);
   text("bias: " + r, 50, 50);
   text("domain: " + d / TWO_PI + " pi", 50, 100);
-  rfr = (rfr * 9 + frameRate() / 60) / 10
+  rfr = (rfr * 9 + frameRate() / 60) / 10;
   text("framerate: " + round(rfr * 10) * 10 + "%", 50, 150);
-  const o = createVector(xOff, yOff);
-  const c = createVector(width / 2, height / 2);
-  if (mDelta != 0) {
-    m += mDelta;
-    background(220);
-  }
-  const zoom = Math.pow(2, m) * (width * width + height * height) / (600 * 600 + 800 * 800);
-  if (mouseIsPressed) {
-    xOff += (pmouseX - mouseX) / zoom;
-    yOff += (pmouseY - mouseY) / zoom;
-    background(220);
-  }
-  o.mult(zoom);
-  c.sub(o);
-  // if (frameCount % 30  == 0) { 
-  b.Draw(c, zoom, color(0), d, r, createVector(-10));
-  // }
-  mDelta = 0;
-
+  pop();
 }
 
 function clamp(num, min, max) {

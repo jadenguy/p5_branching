@@ -48,12 +48,12 @@ class binaryNode {
 
         if (this.left) {
             const a = p5.Vector.mult(angle, 2);
-            a.rotate(domain * -.5);
             a.rotate(domain * biasR * .5)
             this.left.Draw(endHere, magnification, color(255, 0, 0, 128), domain / 2, biasR, a, true);
         }
         if (this.right) {
             const a = p5.Vector.mult(angle, 2);
+            a.rotate(domain * -.5);
             a.rotate(domain * biasR * .5)
             this.right.Draw(endHere, magnification, color(0, 0, 255, 128), domain / 2, biasR, a, true);
         }
