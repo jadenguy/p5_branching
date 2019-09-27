@@ -14,7 +14,7 @@ function setup() {
   background(220);
   stroke(220);
   r = 0;
-  d = TWO_PI;
+  d = PI;
   fill(0);
   xOff = 0;
   yOff = 0;
@@ -30,7 +30,7 @@ function draw() {
     // background(220);
     // if (r = 0) { r = 1; } else { r = 0; }
   }
-  r = map(Math.sin(frameCount / 30), -1, 1, 0, 1);
+  r = round(map(Math.sin(frameCount / 30), -1, 1, 0, 1) * 4) / 4;
   // d = map(int(frameCount / 120) % 10, 0,9, PI, TWO_PI);
   stroke(0);
   fill(220);

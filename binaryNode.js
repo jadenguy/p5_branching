@@ -1,3 +1,4 @@
+let magicNumber = .75
 class binaryNode {
     constructor(key = null) {
         this.key = key;
@@ -38,24 +39,25 @@ class binaryNode {
         }
     }
     Draw(origin, magnification = 1, dColor = 0, domain = PI, bias = 0, angle = createVector(10), child = false) {
-
-        const biasR = map(clamp(bias, 0, 1), 0, 1, -.5, .5);
-        // print(biasR);
-
+        const biasR = clamp(bias,0,1)
+        if (!child) {
+            print(angle.heading());
+            angle.rotate(-domain * biasR * .5);
+            print(angle.heading());
+        }
         const lineVector = p5.Vector.mult(angle, magnification * child);
         const endHere = p5.Vector.add(origin, lineVector);
 
         if (this.left) {
             const a = p5.Vector.mult(angle, 2);
-            a.rotate(-domain / 4);
-            // a.rotate(domain * biasR)
-            this.left.Draw(endHere, magnification, color(255, 0, 0), domain / 2, biasR, a, true);
+            a.rotate(domain * -.5);
+            a.rotate(domain * biasR * .5)
+            this.left.Draw(endHere, magnification, color(255, 0, 0, 128), domain / 2, biasR, a, true);
         }
         if (this.right) {
             const a = p5.Vector.mult(angle, 2);
-            a.rotate(domain / 4);
-            // a.rotate(domain * biasR)
-            this.right.Draw(endHere, magnification, color(0, 0, 255), domain / 2, biasR, a, true);
+            a.rotate(domain * biasR * .5)
+            this.right.Draw(endHere, magnification, color(0, 0, 255, 128), domain / 2, biasR, a, true);
         }
 
         push();
