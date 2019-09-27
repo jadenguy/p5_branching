@@ -39,10 +39,10 @@ class binaryNode {
         }
     }
     Draw(origin, magnification = 1, dColor = 0, domain = PI, bias = 0, angle = createVector(10), child = false) {
-        const biasR = clamp(bias,0,1)
+        const biasR = clamp(bias, 0, 1)
         if (!child) {
             print(angle.heading());
-            angle.rotate(-domain * biasR * .5);
+            angle.rotate(-domain * biasR);
             print(angle.heading());
         }
         const lineVector = p5.Vector.mult(angle, magnification * child);
