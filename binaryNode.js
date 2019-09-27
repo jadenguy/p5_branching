@@ -37,29 +37,32 @@ class binaryNode {
             console.log("DUPLICATE KEY");
         }
     }
-    Draw(parent, mag = 1, dColor = 0, angle = createVector(10), domain = TWO_PI, biasR = 0, child = false) {
+    Draw(origin, magnification = 1, dColor = 0, domain = PI, bias = 0, angle = createVector(10), child = false) {
 
-        push();
-        const x0 = parent.x;
-        const y0 = parent.y;
-        const lineVector = p5.Vector.mult(angle, mag * child);
-        print(lineVector.mag())
-        const endHere = p5.Vector.add(parent, lineVector);
-        const x1 = endHere.x;
-        const y1 = endHere.y;
+        const biasR = map(clamp(bias, 0, 1), 0, 1, -.5, .5);
+        // print(biasR);
 
+        const lineVector = p5.Vector.mult(angle, magnification * child);
+        const endHere = p5.Vector.add(origin, lineVector);
 
         if (this.left) {
-            const lAngle = p5.Vector.mult(angle, mag);
-            lAngle.rotate(domain / 2);
-            this.left.Draw(endHere, mag, color(255, 0, 0), lAngle, domain / 2, biasR, true);
+            const a = p5.Vector.mult(angle, 2);
+            a.rotate(-domain / 4);
+            // a.rotate(domain * biasR)
+            this.left.Draw(endHere, magnification, color(255, 0, 0), domain / 2, biasR, a, true);
         }
         if (this.right) {
-            const rAngle = p5.Vector.mult(angle, mag);
-            this.right.Draw(endHere, mag, color(0, 0, 255), rAngle, domain / 2, biasR, true);
+            const a = p5.Vector.mult(angle, 2);
+            a.rotate(domain / 4);
+            // a.rotate(domain * biasR)
+            this.right.Draw(endHere, magnification, color(0, 0, 255), domain / 2, biasR, a, true);
         }
 
-
+        push();
+        const x0 = origin.x;
+        const y0 = origin.y;
+        const x1 = endHere.x;
+        const y1 = endHere.y;
         stroke(dColor);
         line(x0, y0, x1, y1);
         const tl = (this.key).toString().length;
@@ -71,7 +74,7 @@ class binaryNode {
         textFont('courier');
         text(this.key, x1 + 3, y1 + 13);
         pop();
-        return createVector(x1, y1)
+        return endHere;
     }
 }
 

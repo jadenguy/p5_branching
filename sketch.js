@@ -1,47 +1,62 @@
 let b;
-let m = -5;
+let m = -1;
+let r;
+let d;
 let mDelta = 0;
 let xOff = 0;
 let yOff = 0;
 
 
 function setup() {
-  b = createBinaryNode(makeList(10));
+  b = createBinaryNode(makeList(7));
+  // b = createBinaryNode([1,2,3,4,5,6,7]);
   createCanvas(windowWidth, windowHeight - 4);
+  background(220);
   stroke(220);
-
+  r = 0;
+  d = TWO_PI;
   fill(0);
   xOff = 0;
   yOff = 0;
 }
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight - 4);
+  background(220);
 }
 function draw() {
 
-  if (frameCount % 10 == 0) {
-    r = map(frameCount / 10 % 5, 0, 4, 0, 1);
-    d = map(frameCount / 10 % 20, 0, 19, 0, TWO_PI);
-    a = 0;
-    background(220);
-    text(r, 100, 100);
-    print(r);
-    const o = createVector(xOff, yOff);
-    const c = createVector(width / 2, height / 2);
-    if (mDelta != 0) {
-      m += mDelta;
-    }
-    const zoom = Math.pow(2, m) * width * height / 600 / 800;
-    if (mouseIsPressed) {
-      xOff += (pmouseX - mouseX) / zoom;
-      yOff += (pmouseY - mouseY) / zoom;
-    }
-    o.mult(zoom);
-    c.sub(o);
-    b.Draw(c, zoom);
-    // print(c, zoom, color(0), a, d, r);
-    mDelta = 0;
+  background(220);
+  if (frameCount % 60 == 0) {
+    // background(220);
+    // if (r = 0) { r = 1; } else { r = 0; }
   }
+  r = map(Math.sin(frameCount / 30), -1, 1, 0, 1);
+  // d = map(int(frameCount / 120) % 10, 0,9, PI, TWO_PI);
+  stroke(0);
+  fill(220);
+  rect(0, 0, 250, 150);
+  stroke(220);
+  fill(0);
+  text("bias: " + r, 50, 50);
+  text("domain: " + d, 50, 100);
+  const o = createVector(xOff, yOff);
+  const c = createVector(width / 2, height / 2);
+  if (mDelta != 0) {
+    m += mDelta;
+    background(220);
+  }
+  const zoom = Math.pow(2, m) * width * height / 600 / 600;
+  if (mouseIsPressed) {
+    xOff += (pmouseX - mouseX) / zoom;
+    yOff += (pmouseY - mouseY) / zoom;
+  }
+  o.mult(zoom);
+  c.sub(o);
+  // if (frameCount % 30  == 0) { 
+  b.Draw(c, zoom, color(0), d, r, createVector(-10));
+  // }
+  mDelta = 0;
+
 }
 
 function clamp(num, min, max) {
